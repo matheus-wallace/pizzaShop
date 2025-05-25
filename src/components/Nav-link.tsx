@@ -8,7 +8,7 @@ const NavLink = (props: NavLinkProps) => {
       data-current={props.to === pathname}
       className="text-muted-foreground hover:text-foreground data-[current=true]:text-foreground flex items-center gap-1.5 text-sm font-medium"
       {...props}
-    ></Link>
+    />
   )
 }
 
