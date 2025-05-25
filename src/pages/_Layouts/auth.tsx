@@ -13,7 +13,9 @@ const AuthLayout = () => {
           Paniel do parceiro &copy; pizza.shop - {new Date().getFullYear()}
         </footer>
       </div>
-      <div>{<Outlet />}</div>
+      <div className="flex flex-col items-center justify-center">
+        {<Outlet />}
+      </div>
     </div>
   )
 }
