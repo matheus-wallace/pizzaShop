@@ -4,6 +4,6 @@ export interface SignInBody {
   email: string
 }
 
-export async function signin({ email }: SignInBody) {
-  api.post('authenticate', { email })
+export async function signIn({ email }: SignInBody) {
+  api.post('/authenticate', { email })
 }
