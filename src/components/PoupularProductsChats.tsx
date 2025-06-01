@@ -42,7 +42,7 @@ const PopularProductsChart = () => {
               cy="50%"
               outerRadius={86}
               innerRadius={64}
-              strokeWidth={3}
+              strokeWidth={1}
               labelLine={false}
               label={({
                 cx,
