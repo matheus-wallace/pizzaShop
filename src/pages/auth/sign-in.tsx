@@ -1,9 +1,11 @@
+import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { signin } from '@/api/sign-in'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -21,12 +23,18 @@ const SignIn = () => {
     formState: { isSubmitting },
   } = useForm<SignInForm>()
 
-  async function handleSignIn(data: SignInForm) {
-    console.log(data)
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+  const { mutateAsync: authenticate } = useMutation({
+    mutationFn: signin,
+    retry: 3,
+  })
+  // apisign-in.ts
+  // export async function signin({ email }: SignInBody) {
+  //   api.post('authenticate', { email })
+  // }
 
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+  async function handleSignIn(data: SignInForm) {
+    try {
+      await authenticate({ email: data.email })
       toast.success('Enviamos um link de autenticação para seu e-mail.', {
         action: {
           label: 'Reenviar',
