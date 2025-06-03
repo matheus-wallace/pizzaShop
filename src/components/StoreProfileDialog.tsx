@@ -25,7 +25,7 @@ import { Textarea } from './ui/textarea'
 
 const storeProfileSchema = z.object({
   name: z.string().min(1, 'Name is required'),
-  description: z.string(),
+  description: z.string().nullable(),
 })
 
 type StoreProfileSchema = z.infer<typeof storeProfileSchema>
@@ -51,19 +51,35 @@ const StoreProfileDialog = () => {
     },
   })
 
+  function updateManagedEstablishmentCache({
+    name,
+    description,
+  }: StoreProfileSchema) {
+    const cached = queryClient.getQueryData<GetEstablishmentResponse>([
+      'establishment',
+    ])
+    if (cached) {
+      queryClient.setQueryData<GetEstablishmentResponse>(['establishment'], {
+        ...cached,
+        name,
+        description,
+      })
+    }
+
+    return { cached }
+  }
+
   const { mutateAsync: updateCurrentProfile } = useMutation({
     mutationFn: updateProfile,
     retry: 3,
-    onSuccess(_, { name, description }) {
-      const cached = queryClient.getQueryData<GetEstablishmentResponse>([
-        'establishment',
-      ])
-      if (cached) {
-        queryClient.setQueryData<GetEstablishmentResponse>(['establishment'], {
-          ...cached,
-          name,
-          description,
-        })
+    onMutate({ name, description }) {
+      const { cached } = updateManagedEstablishmentCache({ name, description })
+
+      return { previousProfile: cached }
+    },
+    onError(_, __, context) {
+      if (context?.previousProfile) {
+        updateManagedEstablishmentCache(context.previousProfile)
       }
     },
   })
