@@ -1,8 +1,9 @@
 import { formatDistanceToNow } from 'date-fns'
 import { enUS } from 'date-fns/locale'
 import { ArrowRight, Search, X } from 'lucide-react'
+import { useState } from 'react'
 
-import OrderDetails from './Order-details'
+import { OrderDetails } from './Order-details'
 import OrderStatus from './Order-status'
 import { Button } from './ui/button'
 import { Dialog, DialogTrigger } from './ui/dialog'
@@ -18,17 +19,18 @@ export interface OrderTalbeRowProps {
 }
 
 const OrderTableRow = ({ order }: OrderTalbeRowProps) => {
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false)
   return (
     <TableRow>
       <TableCell>
-        <Dialog>
+        <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
           <DialogTrigger asChild>
             <Button variant={'outline'} size={'xs'}>
               <Search className="h3 w-3" />
               <span className="sr-only">Order Details</span>
             </Button>
           </DialogTrigger>
-          <OrderDetails />
+          <OrderDetails open={isDetailsOpen} orderId={order.orderId} />
         </Dialog>
       </TableCell>
       <TableCell className="font-mono text-xs font-medium">
@@ -45,7 +47,7 @@ const OrderTableRow = ({ order }: OrderTalbeRowProps) => {
       </TableCell>
       <TableCell className="font-medium">{order.customerName}</TableCell>
       <TableCell className="font-medium">
-        {order.total.toLocaleString('en-US', {
+        {(order.total / 100).toLocaleString('en-US', {
           style: 'currency',
           currency: 'USD',
         })}
