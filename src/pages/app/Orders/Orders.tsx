@@ -4,7 +4,7 @@ import { useSearchParams } from 'react-router'
 import { z } from 'zod'
 
 import { getOrders } from '@/api/get-order'
-import OrderTableFilters from '@/components/Order-table-filters'
+import { OrderTableFilters } from '@/components/Order-table-filters'
 import OrderTableRow from '@/components/Order-Table-row'
 import Pagination from '@/components/Pagination'
 import {
@@ -15,41 +15,56 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-const Orders = () => {
+export function Orders() {
   const [searchParams, setSearchParams] = useSearchParams()
+
+  const orderId = searchParams.get('orderId')
+  const customerName = searchParams.get('customerName')
+  const status = searchParams.get('status')
+
   const pageIndex = z.coerce
     .number()
     .transform((page) => page - 1)
     .parse(searchParams.get('page') ?? '1')
+
   const { data: result } = useQuery({
-    queryKey: ['orders', pageIndex],
-    queryFn: () => getOrders({ pageIndex }),
+    queryKey: ['orders', pageIndex, orderId, customerName, status],
+    queryFn: () =>
+      getOrders({
+        pageIndex,
+        orderId,
+        customerName,
+        status: status === 'all' ? null : status,
+      }),
   })
 
   function handlePaginate(pageIndex: number) {
     setSearchParams((state) => {
       state.set('page', (pageIndex + 1).toString())
+
       return state
     })
   }
 
   return (
     <>
-      <Helmet title="Orders" />
+      <Helmet title="Pedidos" />
+
       <div className="flex flex-col gap-4">
         <h1 className="text-3xl font-bold tracking-tight">Orders</h1>
         <div className="space-y-2.5">
           <OrderTableFilters />
+
           <div className="rounded-md border">
             <Table>
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[64px]"></TableHead>
-                  <TableHead className="w-[140px]">Order ID</TableHead>
-                  <TableHead className="w-[180px]">Placed At</TableHead>
+                  <TableHead className="w-[140px]">Identifier</TableHead>
+                  <TableHead className="w-[180px]">Placed</TableHead>
                   <TableHead className="w-[140px]">Status</TableHead>
-                  <TableHead>Customer Name</TableHead>
-                  <TableHead className="w-[140px]">Total</TableHead>
+                  <TableHead>Customer</TableHead>
+                  <TableHead className="w-[140px]">Order Total</TableHead>
                   <TableHead className="w-[164px]"></TableHead>
                   <TableHead className="w-[132px]"></TableHead>
                 </TableRow>
@@ -62,6 +77,7 @@ const Orders = () => {
               </TableBody>
             </Table>
           </div>
+
           {result && (
             <Pagination
               onPageChange={handlePaginate}
@@ -75,5 +91,3 @@ const Orders = () => {
     </>
   )
 }
-
-export default Orders
