@@ -1,11 +1,23 @@
+import { formatDistanceToNow } from 'date-fns'
+import { enUS } from 'date-fns/locale'
 import { ArrowRight, Search, X } from 'lucide-react'
 
 import OrderDetails from './Order-details'
+import OrderStatus from './Order-status'
 import { Button } from './ui/button'
 import { Dialog, DialogTrigger } from './ui/dialog'
 import { TableCell, TableRow } from './ui/table'
+export interface OrderTalbeRowProps {
+  order: {
+    orderId: string
+    createdAt: string
+    status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
+    customerName: string
+    total: number
+  }
+}
 
-const OrderTableRow = () => {
+const OrderTableRow = ({ order }: OrderTalbeRowProps) => {
   return (
     <TableRow>
       <TableCell>
@@ -20,17 +32,24 @@ const OrderTableRow = () => {
         </Dialog>
       </TableCell>
       <TableCell className="font-mono text-xs font-medium">
-        12asdw3123sadsa
+        {order.orderId}
       </TableCell>
-      <TableCell className="text-muted-foreground">14 minutes ago</TableCell>
+      <TableCell className="text-muted-foreground">
+        {formatDistanceToNow(order.createdAt, {
+          locale: enUS,
+          addSuffix: true,
+        })}
+      </TableCell>
       <TableCell>
-        <div className="flex items-center gap-2">
-          <span className="h-2 w-2 rounded-full bg-slate-400" />
-          <span className="text-muted-foreground font-medium">Pending</span>
-        </div>
+        <OrderStatus status={order.status} />
       </TableCell>
-      <TableCell className="font-medium">Jorge da Silva</TableCell>
-      <TableCell className="font-medium">R$ 150,00</TableCell>
+      <TableCell className="font-medium">{order.customerName}</TableCell>
+      <TableCell className="font-medium">
+        {order.total.toLocaleString('en-US', {
+          style: 'currency',
+          currency: 'USD',
+        })}
+      </TableCell>
       <TableCell>
         <Button variant={'ghost'} className="xs">
           <ArrowRight className="mr-2 h-3 w-3" />
