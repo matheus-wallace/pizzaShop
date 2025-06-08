@@ -77,7 +77,7 @@ const RevenueChart = () => {
       )}
       {isError && !isFetching && (
         <div className="flex h-[240px] w-full items-center justify-center">
-          <span className="text-red-500">
+          <span className="text-muted-foreground">
             {error instanceof Error
               ? error.message
               : 'The period must be 7 days or less'}
