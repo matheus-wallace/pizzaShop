@@ -5,7 +5,7 @@ import { z } from 'zod'
 
 import { getOrders } from '@/api/get-order'
 import { OrderTableFilters } from '@/components/Order-table-filters'
-import OrderTableRow from '@/components/Order-Table-row'
+import { OrderTableRow } from '@/components/Order-Table-row'
 import Pagination from '@/components/Pagination'
 import {
   Table,
