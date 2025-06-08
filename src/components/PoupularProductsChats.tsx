@@ -1,12 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
-import { BarChart } from 'lucide-react'
+import { BarChart, Loader2 } from 'lucide-react'
 import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 import colors from 'tailwindcss/colors'
 
 import { getPopularProducts } from '@/api/get-popular-products'
 
 import { Card, CardContent, CardHeader, CardTitle } from './ui/card'
-
 const COLORS = [
   colors.sky[500],
   colors.amber[500],
@@ -21,7 +20,7 @@ const PopularProductsChart = () => {
     queryFn: getPopularProducts,
   })
   return (
-    <Card className="col-span-3">
+    <Card className="bg-background col-span-3">
       <CardHeader className="pb-8">
         <div className="flex items-center justify-between">
           <CardTitle className="text-base font-medium">
@@ -31,7 +30,7 @@ const PopularProductsChart = () => {
         </div>
       </CardHeader>
       <CardContent>
-        {popularProducts && (
+        {popularProducts ? (
           <ResponsiveContainer width="100%" height={240}>
             <PieChart style={{ fontSize: 12 }}>
               <Pie
@@ -42,7 +41,7 @@ const PopularProductsChart = () => {
                 cy="50%"
                 outerRadius={86}
                 innerRadius={64}
-                strokeWidth={3}
+                strokeWidth={8}
                 labelLine={false}
                 label={({
                   cx,
@@ -88,6 +87,10 @@ const PopularProductsChart = () => {
               </Pie>
             </PieChart>
           </ResponsiveContainer>
+        ) : (
+          <div className="flex h-[240px] w-full items-center justify-center">
+            <Loader2 className="text-muted-foreground h-8 w-8 animate-spin" />
+          </div>
         )}
       </CardContent>
     </Card>

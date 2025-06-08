@@ -110,9 +110,10 @@ export function OrderTableFilters() {
               value={value}
               disabled={disabled}
             >
-              <SelectTrigger className="h-8 w-[180px]">
+              <SelectTrigger className="bg-background h-8 w-[180px]">
                 <SelectValue />
-                <SelectContent>
+
+                <SelectContent className="bg-background">
                   <SelectItem value="all">All</SelectItem>
                   <SelectItem value="pending">Pending</SelectItem>
                   <SelectItem value="canceled">Canceled</SelectItem>
