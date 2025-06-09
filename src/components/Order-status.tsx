@@ -21,16 +21,28 @@ const OrderStatus = ({ status }: OrderStatusProps) => {
   return (
     <div className="flex items-center gap-2">
       {status === 'pending' && (
-        <span className="inline-flex h-2 w-2 animate-pulse rounded-full bg-slate-400" />
+        <span
+          data-testid="badge"
+          className="inline-flex h-2 w-2 animate-pulse rounded-full bg-slate-400"
+        />
       )}
       {status === 'canceled' && (
-        <span className="inline-flex h-2 w-2 rounded-full bg-rose-500" />
+        <span
+          data-testid="badge"
+          className="inline-flex h-2 w-2 rounded-full bg-rose-500"
+        />
       )}
       {status === 'delivered' && (
-        <span className="inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+        <span
+          data-testid="badge"
+          className="inline-flex h-2 w-2 rounded-full bg-emerald-500"
+        />
       )}
       {['processing', 'delivering'].includes(status) && (
-        <span className="inline-flex h-2 w-2 rounded-full bg-amber-500" />
+        <span
+          data-testid="badge"
+          className="inline-flex h-2 w-2 rounded-full bg-amber-500"
+        />
       )}
       <span className="text-muted-foreground font-medium">
         {orderStatusMap[status]}
