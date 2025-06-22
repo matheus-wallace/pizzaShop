@@ -31,22 +31,23 @@ const SignIn = () => {
 
   const { mutateAsync: authenticate } = useMutation({
     mutationFn: signIn,
-    retry: 3,
   })
 
   async function handleSignIn(data: SignInForm) {
     try {
-      await authenticate({ email: data.email })
-      toast.success('Enviamos um link de autenticação para seu e-mail.', {
+      const response = await authenticate({ email: data.email })
+      console.log(response)
+
+      toast.success('We have sent an authentication link to your email.', {
         action: {
-          label: 'Reenviar',
+          label: 'Resend',
           onClick: () => {
             handleSignIn(data)
           },
         },
       })
     } catch (error) {
-      toast.error('Credenciais inválidas.')
+      toast.error('Invalid credentials.')
     }
   }
 
@@ -68,7 +69,7 @@ const SignIn = () => {
           </div>
           <form className="space-y-2" onSubmit={handleSubmit(handleSignIn)}>
             <div className="space-y-4">
-              <Label htmlFor="email">Your e-mail</Label>
+              <Label htmlFor="email">Your email</Label>
               <Input id="email" type="email" {...register('email')} />
             </div>
             <Button disabled={isSubmitting} className="w-full" type="submit">
