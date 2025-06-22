@@ -30,7 +30,6 @@ export function SignUp() {
 
   const { mutateAsync: registerNewEstablishment } = useMutation({
     mutationFn: registerEstablishment,
-    retry: 3,
   })
 
   async function handleSignUp(data: SignUpForm) {
