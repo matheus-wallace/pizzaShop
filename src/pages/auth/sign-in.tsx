@@ -31,7 +31,6 @@ const SignIn = () => {
 
   const { mutateAsync: authenticate } = useMutation({
     mutationFn: signIn,
-    retry: 3,
   })
 
   async function handleSignIn(data: SignInForm) {
