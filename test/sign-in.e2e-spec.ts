@@ -10,7 +10,7 @@ test('sign in successfully', async ({ page }) => {
     'We have sent an authentication link to your email.',
   )
 
-  expect(toast).toBeVisible()
+  await expect(toast).toBeVisible()
 
   await page.waitForTimeout(100)
 })
